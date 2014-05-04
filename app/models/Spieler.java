@@ -1,27 +1,31 @@
 package models;
 
 import play.data.validation.Constraints;
-import play.db.jpa.JPA;
+import play.db.jpa.*;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import java.util.*;
+import play.data.format.*;
+
+
 @Entity
-@Access(AccessType.FIELD)
 public class Spieler {
 
 	@Id
-	public long id;
+	public Long id;
 	 
     public String vorname;
 
     public String nachname;
 
-    public String birthday;
+    @Formats.DateTime(pattern="yyyy-MM-dd")
+    public Date birthday;
 
-    public enum geschlecht { male, female };
+    public Boolean geschlecht;
 
     @Constraints.Required
     @Constraints.MinLength(4)
@@ -30,7 +34,4 @@ public class Spieler {
 
     @Constraints.Required
     public String password;
-
-
-
 }
