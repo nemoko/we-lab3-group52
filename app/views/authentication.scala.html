@@ -1,0 +1,27 @@
+@(message: String)
+
+@main(null, "loginpage") {
+
+		<!-- Login section -->
+        <section role="main">
+            <section id="login" aria-labelledby="loginheading">
+                <form action="/index" method="post">
+                    <fieldset>
+                        <legend id="loginheading">Login</legend>
+                        <label for="username">Benutzername:</label>
+                        <input id="username" type="text" required="required"/>
+                        <label for="password">Passwort:</label>
+                        <input id="password" type="password" required="required"/>
+                        <input id="loginsubmit" type="submit" value="Anmelden"/>
+                    </fieldset>
+                </form>
+            </section>
+            <!-- Register section -->
+            <section id="register" aria-labelledby="registerheading">
+                <h2 id="registerheading" class="accessibility">Registrierung</h2>
+                <p>Nicht registriert?</p>
+                <a href="/registration">Zur Registierung</a>
+            </section>
+        </section>
+
+}

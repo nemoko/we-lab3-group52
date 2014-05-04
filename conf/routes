@@ -3,11 +3,13 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
+GET     /                           controllers.Application.authentication()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
-GET     /anonymoushello             controllers.Application.sayHello()
-GET     /hello                      controllers.Application.sayHelloTo(name: String = "Stranger")
-GET     /hello/:name                controllers.Application.sayHelloTo(name: String)
+POST    /index             			controllers.Application.index()
+GET		/registration				controllers.Application.registration()
+GET		/quiz						controllers.Application.quiz_new_player()
+POST	/quiz						controllers.Application.quiz()
+GET		/quizover					controllers.Application.quizover()

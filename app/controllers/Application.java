@@ -5,20 +5,27 @@ import views.html.*;
 
 public class Application extends Controller {
 
+    public static Result authentication() {
+        return ok(authentication.render(""));
+    }
+
     public static Result index() {
-        return ok(index.render("Your new application is now!"));
+        return ok(index.render(""));
     }
-
-    public static Result sayHello() {
-        return ok("Hello " + request().remoteAddress());
+    
+    public static Result registration() {
+        return ok(registration.render(""));
     }
-
-    public static Result sayHelloTo(String name) {
-        if (name.toLowerCase().matches("[a-z]")) {
-            String theName = name.toUpperCase();
-            return ok("Hello " + theName);
-        } else {
-            return badRequest("Provide a proper name!");
-        }
+    
+    public static Result quiz_new_player() {
+        return ok(quiz.render(""));
+    }
+    
+    public static Result quiz() {
+        return ok(quiz.render(""));
+    }
+    
+    public static Result quizover() {
+        return ok(quizover.render(""));
     }
 }

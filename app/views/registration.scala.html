@@ -1,27 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
-    <head>
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Business Informatics Group Quiz - Registrieren</title>
-        <link rel="stylesheet" type="text/css" href="style/screen.css" />
-        <script src="js/jquery.js" type="text/javascript"></script>
-        <script src="js/framework.js" type="text/javascript"></script>
-    </head>
-    <body id="registerpage">
-        <a class="accessibility" href="#register">Zur Registrierung springen</a>
-        <header role="banner" aria-labelledby="mainheading"><h1 id="mainheading"><span class="accessibility">Business Informatics Group</span> Quiz</h1></header>
-        <nav role="navigation" aria-labelledby="navheading">
-            <h2 id="navheading" class="accessibility">Navigation</h2>
-            <ul>
-                <li><a id="loginlink" title="Klicke hier um dich anzumelden" href="#" accesskey="l">Anmelden</a></li>
-            </ul>
-        </nav>
-        <section role="main" id="register" aria-labelledby="registerheading">
+@(message: String)
+
+@main(null, "registerpage") {
+
+	<section role="main" id="register" aria-labelledby="registerheading">
             <!-- Register section -->
             <h2 id="registerheading" class="accessibility">Registrierung</h2>
-            <form action="register.html" method="post">
+            <form action="/index" method="post">
                 <fieldset>
                     <legend>Persönliche Daten</legend>
                     <label for="firstname">Vorname:</label>
@@ -54,8 +38,5 @@
                 </fieldset>
             </form>
         </section>
-
-        <!-- footer -->
-        <footer role="contentinfo">© 2014 BIG Quiz</footer>
-    </body>
-</html>
+	
+}
