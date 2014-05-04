@@ -1,4 +1,25 @@
-This is your new Play application
-=====================================
-
-This file will be packaged with your application, when using `play dist`.
+Seitenfluss Diagramm
+==================== 
+                                               
+===> authentication.html ---------------> INDEX.html 
+ |                                             |
+ |     ^           |                           |
+ |     |           |                           |
+ |     |           v           - - - - - - - - - - - - - - - - - - - - - - - - 
+ |                                             |
+ |    registration.html        -               |<-------------------------   -
+ |                                             |                          |
+ |                             -               v                          |  -
+ |                                          quiz.html <-----              |
+ |                             -               |            |             |  -
+ |                                             |            |             |
+ |                             -               |            |             |  -
+ |                                             |----> roundover.html      |
+ |                             -               |                          |  -
+ |                                             |                          |
+ |                             -               v                          |  -
+ |                                          quizover.html -----------------
+ |                             -                                             -
+ |
+ ----------------------------------- {abmelden}                              -
+                               - - - - - - - - - - - - - - - - - - - - - - - - 
