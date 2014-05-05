@@ -1,4 +1,4 @@
-@(message: String)
+@(game_infos: List[String], answers: List[String])
 
 @main(null, "questionpage") {
 
@@ -7,38 +7,37 @@
             <section id="roundinfo" aria-labelledby="roundinfoheading">
                 <h2 id="roundinfoheading" class="accessibility">Spielerinformationen</h2>
                 <div id="player1info">
-                    <span id="player1name">Spieler 1</span>
+                    <span id="player1name">@game_infos.get(0)</span>
                     <ul class="playerroundsummary">
-                        <li><span class="accessibility">Frage 1:</span><span id="player1answer1" class="correct">Richtig</span></li>
-                        <li><span class="accessibility">Frage 2:</span><span id="player1answer2" class="incorrect">Falsch</span></li>
-                        <li><span class="accessibility">Frage 3:</span><span id="player1answer3" class="unknown">Unbekannt</span></li>
+                        <li><span class="accessibility">Frage 1:</span><span id="player1answer1" class=@game_infos.get(2)>Richtig</span></li>
+                        <li><span class="accessibility">Frage 2:</span><span id="player1answer2" class=@game_infos.get(4)>Falsch</span></li>
+                        <li><span class="accessibility">Frage 3:</span><span id="player1answer3" class=@game_infos.get(6)>Unbekannt</span></li>
                     </ul>
                 </div>
                 <div id="player2info">
-                    <span id="player2name">Spieler 2</span>
+                    <span id="player2name">@game_infos.get(1)</span>
                     <ul class="playerroundsummary">
-                        <li><span class="accessibility">Frage 1:</span><span id="player2answer1" class="correct">Richtig</span></li>
-                        <li><span class="accessibility">Frage 2:</span><span id="player2answer2" class="correct">Richtig</span></li>
-                        <li><span class="accessibility">Frage 3:</span><span id="player2answer3" class="unknown">Unbekannt</span></li>
+                        <li><span class="accessibility">Frage 1:</span><span id="player2answer1" class=@game_infos.get(3)>Richtig</span></li>
+                        <li><span class="accessibility">Frage 2:</span><span id="player2answer2" class=@game_infos.get(5)>Richtig</span></li>
+                        <li><span class="accessibility">Frage 3:</span><span id="player2answer3" class=@game_infos.get(7)>Unbekannt</span></li>
                     </ul>
                 </div>
-                <div id="currentcategory"><span class="accessibility">Kategorie:</span> Sport</div>
+                <div id="currentcategory"><span class="accessibility">Kategorie:</span> @game_infos.get(8)</div>
             </section>
             
             <!-- Question -->
             <section id="question" aria-labelledby="questionheading">
-                
-                <form id="questionform" action="/quiz" method="post">
+                <form id="questionform" action="@routes.Application.quiz()" method="post">
                     <h2 id="questionheading" class="accessibility">Frage</h2>
-                    <p id="questiontext">Welche zwei LVAs werden im Model EWA zusammengefasst?</p>
+                    <p id="questiontext">@game_infos.get(9)</p>
                     <ul id="answers">
-                        <li><input id="option1" type="checkbox"/><label for="option1">IT Strategie</label></li>
-                        <li><input id="option2" type="checkbox"/><label for="option2">Web Engineering</label></li>
-                        <li><input id="option3" type="checkbox"/><label for="option3">Semistrukturierte Daten</label></li>
-                        <li><input id="option4" type="checkbox"/><label for="option4">Objektorientierte Modellierung</label></li>
+                    @for((answer,index) <- answers.zipWithIndex){
+                        <li><input id="option@index" name="answers" value="@answer" type="checkbox"/><label for="option@index" >@answer</label></li>
+                    }
                     </ul>
                     <input id="timeleftvalue" type="hidden" value="100"/>
                     <input id="next" type="submit" value="weiter" accesskey="s"/>
+                
                 </form>
             </section>
             

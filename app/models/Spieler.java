@@ -2,18 +2,19 @@ package models;
 
 import play.data.validation.Constraints;
 import play.db.jpa.*;
+import java.util.*;
+import play.data.format.*;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import java.util.*;
-import play.data.format.*;
-
+import at.ac.tuwien.big.we14.lab2.api.User;
 
 @Entity
-public class Spieler {
+@Access(AccessType.FIELD)
+public class Spieler implements User{
 
 	@Id
 	public Long id;
@@ -34,4 +35,17 @@ public class Spieler {
 
     @Constraints.Required
     public String password;
+
+	@Override
+	public String getName() {
+		return nachname;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.nachname = name;
+	}
+
+
+
 }

@@ -1,4 +1,4 @@
-@(message: String)
+@(game_infos: List[String])
 
 @main(null, "winnerpage") {
 
@@ -6,29 +6,29 @@
             <!-- winner message -->
             <section id="roundwinner" aria-labelledby="roundwinnerheading">
                 <h2 id="roundwinnerheading" class="accessibility">Rundenzwischenstand</h2>
-                <p class="roundwinnermessage">Spieler 2 gewinnt Runde 1!</p>
+                <p class="roundwinnermessage">@game_infos.get(0) gewinnt Runde @game_infos.get(1)!</p>
             </section>
         
             <!-- round info -->    
             <section id="roundinfo" aria-labelledby="roundinfoheading">
                 <h2 id="roundinfoheading" class="accessibility">Spielerinformationen</h2>
                 <div id="player1info" class="playerinfo">
-                    <span id="player1name" class="playername">Spieler 1</span>
+                    <span id="player1name" class="playername">@game_infos.get(2)</span>
                     <ul class="playerroundsummary">
-                        <li><span class="accessibility">Frage 1:</span><span id="player1answer1" class="correct">Richtig</span></li>
-                        <li><span class="accessibility">Frage 2:</span><span id="player1answer2" class="incorrect">Falsch</span></li>
-                        <li><span class="accessibility">Frage 3:</span><span id="player1answer3" class="correct">Richtig</span></li>
+                        <li><span class="accessibility">Frage 1:</span><span id="player1answer1" class=@game_infos.get(4)>Richtig</span></li>
+                        <li><span class="accessibility">Frage 2:</span><span id="player1answer2" class=@game_infos.get(5)>Falsch</span></li>
+                        <li><span class="accessibility">Frage 3:</span><span id="player1answer3" class=@game_infos.get(6)>Richtig</span></li>
                     </ul>
-                    <p id="player1roundcounter" class="playerroundcounter">Gewonnene Runden: <span id="player1wonrounds" class="playerwonrounds">2</span></p>
+                    <p id="player1roundcounter" class="playerroundcounter">Gewonnene Runden: <span id="player1wonrounds" class="playerwonrounds">@game_infos.get(7)</span></p>
                 </div>
                 <div id="player2info" class="playerinfo">
-                    <span id="player2name" class="playername">Spieler 2</span>
+                    <span id="player2name" class="playername">@game_infos.get(3)</span>
                     <ul class="playerroundsummary">
-                        <li><span class="accessibility">Frage 1:</span><span id="player2answer1" class="correct">Richtig</span></li>
-                        <li><span class="accessibility">Frage 2:</span><span id="player2answer2" class="correct">Richtig</span></li>
-                        <li><span class="accessibility">Frage 3:</span><span id="player2answer3" class="correct">Richtig</span></li>
+                        <li><span class="accessibility">Frage 1:</span><span id="player2answer1" class=@game_infos.get(8)>Richtig</span></li>
+                        <li><span class="accessibility">Frage 2:</span><span id="player2answer2" class=@game_infos.get(9)>Richtig</span></li>
+                        <li><span class="accessibility">Frage 3:</span><span id="player2answer3" class=@game_infos.get(10)>Richtig</span></li>
                     </ul>
-                    <p id="player2roundcounter" class="playerroundcounter">Gewonnene Runden: <span id="player2wonrounds" class="playerwonrounds">1</span></p>
+                    <p id="player2roundcounter" class="playerroundcounter">Gewonnene Runden: <span id="player2wonrounds" class="playerwonrounds">@game_infos.get(11)</span></p>
                 </div>
                 <a id="next" href="/quiz">Weiter</a>
             </section>
