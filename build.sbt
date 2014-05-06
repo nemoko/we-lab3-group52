@@ -14,6 +14,6 @@ libraryDependencies ++= Seq(
 
 templatesImport += "scala.collection._"
 
-templatesImport += "lib._"
+templatesImport += "lib.big-quiz-api.jar.at.ac.tuwien.big.we14.lab2.api._"
 
 play.Project.playJavaSettings
