@@ -1,4 +1,4 @@
-@(connected: String, page: String)(content: Html)
+@(connected: String, titleName: String, page: String)(content: Html)
 
 <!DOCTYPE html>
 
@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Business Informatics Group Quiz</title>
+<title>Business Informatics Group Quiz @titleName</title>
 <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/main.css")" />
 <script src="@routes.Assets.at("javascripts/framework.js")" type="text/javascript"></script>
 <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
