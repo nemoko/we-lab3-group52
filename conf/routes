@@ -11,5 +11,6 @@ GET         /registration        controllers.Application.registration()
 GET         /quiz                controllers.Application.quiz_new_player()
 GET         /quizover            controllers.Application.quizover()
 
-POST        /index             	 controllers.Application.index()
+POST        /index               controllers.Application.index()
 POST        /quiz                controllers.Application.quiz()
+POST        /registration        controllers.SignUp.submit()

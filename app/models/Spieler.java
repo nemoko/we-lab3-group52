@@ -5,18 +5,16 @@ import play.db.jpa.*;
 import java.util.*;
 import play.data.format.*;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import at.ac.tuwien.big.we14.lab2.api.User;
 
 @Entity
 @Access(AccessType.FIELD)
-public class Spieler implements User{
+public class Spieler implements User {
 
 	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
 	 
     public String vorname;
@@ -26,7 +24,17 @@ public class Spieler implements User{
     @Formats.DateTime(pattern="yyyy-MM-dd")
     public Date birthday;
 
-    public Boolean geschlecht;
+    public enum gender {
+        male, female;
+    }
+
+    public static List<String> gender() {
+        List<String> all = new ArrayList<String>();
+        all.add("male");
+        all.add("female");
+
+        return all;
+    }
 
     @Constraints.Required
     @Constraints.MinLength(4)
@@ -45,7 +53,4 @@ public class Spieler implements User{
 	public void setName(String name) {
 		this.nachname = name;
 	}
-
-
-
 }

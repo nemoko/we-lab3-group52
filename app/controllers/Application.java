@@ -8,8 +8,11 @@ import models.Spieler;
 import at.ac.tuwien.big.we14.lab2.api.*;
 import at.ac.tuwien.big.we14.lab2.api.impl.*;
 import play.cache.Cache;
+import play.data.Form;
 import play.mvc.*;
 import views.html.*;
+
+import static play.data.Form.form;
 
 //TODO: session http://www.playframework.com/documentation/1.2/cache
 //TODO: timeleft
@@ -17,7 +20,9 @@ import views.html.*;
 
 public class Application extends Controller {
 
-	public static Result authentication() {
+    final static Form<Spieler> signupForm = form(Spieler.class);
+
+    public static Result authentication() {
 		return ok(authentication.render(""));
 	}
 
@@ -26,7 +31,7 @@ public class Application extends Controller {
 	}
 
 	public static Result registration() {
-		return ok(registration.render(""));
+		return ok(registration.render("", signupForm));
 	}
 
 	public static Result quiz_new_player() {

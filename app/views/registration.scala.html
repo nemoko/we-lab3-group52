@@ -1,42 +1,63 @@
-@(message: String)
+@(message: String, signupForm: Form[Spieler])
+
+@import helper._
+@import helper.twitterBootstrap._
 
 @main(null, "- Registrieren", "registerpage") {
 
 	<section role="main" id="register" aria-labelledby="registerheading">
             <!-- Register section -->
             <h2 id="registerheading" class="accessibility">Registrierung</h2>
-            <form action="/index" method="post">
-                <fieldset>
-                    <legend>Persönliche Daten</legend>
-                    <label for="firstname">Vorname:</label>
-                    <input id="firstname" type="text" name="firstName"/>
-                    
-                    <label for="lastname">Nachname:</label>
-                    <input id="lastname" type="text" name="lastName"/>
-                    
-                    <label for="birthdate">Geburtstag:</label>
-                    <input id="birthdate" type="date" name="birthDate"/>
-                    <div id="error_msg_birthdate" class="hide" role="alert">Verwenden Sie bitte folgendes Datumsformat: dd.mm.yyyy (z.B. 24.12.2012).</div>
-                    
-                    <label for="gender">Geschlecht:</label>
-                    <select id="gender" name="gender">
-                        <option value="m">Männlich</option>
-                        <option value="f">Weiblich</option>
-                    </select>
-                </fieldset>
-                <fieldset>
-                    <legend>Login Daten</legend>
-                    <label for="username">Benutzername*:</label>
-                    <input id="username" type="text" required="required" pattern="\w{4,8}" name="userName"/>
-                    <div id="error_msg_username" class="hide" role="alert">Der Benutzername muss mindestens 4 Zeichen und darf maximal 8 Zeichen enthalten.</div>
-                    
-                    <label for="password">Passwort*:</label>
-                    <input id="password" type="password" required="required" pattern="\w{4,8}" name="password"/>
-                    <div id="error_msg_password" class="hide" role="alert">Das Passwort muss mindestens 4 Zeichen und darf maximal 8 Zeichen enthalten.</div>
-                    <input id="registersubmit" type="submit" value="Registrieren" accesskey="s"/>
-                    <p id="requiredhint">Mit "*" gekennzeichnete Felder sind Pflichtfelder</p>
-                </fieldset>
-            </form>
+
+                @helper.form(action = routes.SignUp.submit) {
+                    <fieldset>
+                        <legend>Persönliche Daten</legend>
+
+                        @inputText(
+                            signupForm("firstname"),
+                            '_label -> "Vorname:",
+                            'id -> "firstname"
+                        )
+
+                        @inputText(
+                            signupForm("lastname"),
+                            '_label -> "Nachname:",
+                            'id -> "lastname"
+                        )
+
+                        @inputDate(
+                            signupForm("birthday"),
+                            '_label -> "Geburtstag:",
+                            '_error -> signupForm.error("Verwenden Sie bitte folgendes Datumsformat: dd.mm.yyyy (z.B. 24.12.2012).")
+                        )
+
+                        @select(
+                            signupForm("gender"),
+                            options = options(Spieler.gender()),
+                            '_default -> "--- Pick your gender ---",
+                            '_label -> "Geschlecht:"
+                        )
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Login Daten</legend>
+
+                        @inputText(
+                            signupForm("username"),
+                            '_label -> "Benutzername*",
+                            'id -> "username",
+                            '_error -> signupForm.error("Der Benutzername muss mindestens 4 Zeichen und darf maximal 8 Zeichen enthalten.")
+                        ) validation.match(abbreviation, "{4,8}")
+
+                        @inputPassword(
+                            signupForm("password"),
+                            '_label -> "Passwort*",
+                            'id -> "password",
+                            '_error -> signupForm.error("Das Passwort muss mindestens 4 Zeichen und darf maximal 8 Zeichen enthalten.")
+                        ) validation.match(abbreviation, "{4,8}")
+
+                        <p id="requiredhint">Mit "*" gekennzeichnete Felder sind Pflichtfelder</p>
+                    </fieldset>
+                }
         </section>
-	
 }
