@@ -10,7 +10,7 @@ import javax.validation.Constraint;
 
 import at.ac.tuwien.big.we14.lab2.api.User;
 
-@Entity
+@javax.persistence.Entity
 public class Spieler implements User {
 
 	@Id
