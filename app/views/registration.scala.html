@@ -9,18 +9,18 @@
             <!-- Register section -->
             <h2 id="registerheading" class="accessibility">Registrierung</h2>
 
-                @helper.form(action = routes.SignUp.submit) {
+                @helper.form(action = routes.SignUp.createSpieler) {
                     <fieldset>
                         <legend>Persönliche Daten</legend>
 
                         @inputText(
-                            signupForm("firstname"),
+                            signupForm("vorname"),
                             '_label -> "Vorname:",
                             'id -> "firstname"
                         )
 
                         @inputText(
-                            signupForm("lastname"),
+                            signupForm("nachname"),
                             '_label -> "Nachname:",
                             'id -> "lastname"
                         )
@@ -30,7 +30,6 @@
                             '_label -> "Geburtstag:",
                             '_showConstraints -> false
                         )
-                        <div id="error_msg_birthdate" class="hide" role="alert">Verwenden Sie bitte folgendes Datumsformat: dd.mm.yyyy (z.B. 24.12.2012).</div>
 
                     </fieldset>
 
@@ -43,7 +42,6 @@
                             'id -> "username",
                             '_showConstraints -> false
                         )
-                        <div id="error_msg_username" class="hide" role="alert">Der Benutzername muss mindestens 4 Zeichen und darf maximal 8 Zeichen enthalten.</div>
 
                         @inputPassword(
                             signupForm("password"),
@@ -51,7 +49,6 @@
                             'id -> "password",
                             '_showConstraints -> false
                         )
-                        <div id="error_msg_password" class="hide" role="alert">Das Passwort muss mindestens 4 Zeichen und darf maximal 8 Zeichen enthalten.</div>
 
                         <input id="registersubmit" type="submit" value="Registrieren" accesskey="s"/>
                         <p id="requiredhint">Mit "*" gekennzeichnete Felder sind Pflichtfelder</p>

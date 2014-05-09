@@ -18,10 +18,10 @@ public class Spieler implements User {
 	public Long id;
 
     @Constraints.Required
-    public String vorname;
+    private String vorname;
 
     @Constraints.Required
-    public String nachname;
+    private String nachname;
 
     @Formats.DateTime(pattern="yyyy-MM-dd")
     public Date birthday;
@@ -34,15 +34,32 @@ public class Spieler implements User {
     @Constraints.Required
     public String password;
 
-	@Override
-	public String getName() {
-		return nachname;
-	}
+    public String getVorname() {
+        return vorname;
+    }
 
-	@Override
-	public void setName(String name) {
-		this.nachname = name;
-	}
+    public void setVorname(String vorname) {
+        this.vorname = vorname;
+    }
+
+    public String getNachname() {
+        return nachname;
+    }
+
+    public void setNachname(String nachname) {
+        this.nachname = nachname;
+    }
+
+    @Override
+    public String getName() {
+        return getVorname() + getNachname();
+    }
+
+    @Override
+    public void setName(String s) {
+        setVorname(s.substring(0,s.lastIndexOf(' ')));
+        setNachname(s.substring(s.lastIndexOf(' ')));
+    }
 
     @Transactional
     public void save() {

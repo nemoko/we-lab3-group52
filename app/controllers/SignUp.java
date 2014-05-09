@@ -8,8 +8,6 @@ import play.mvc.*;
 import views.html.authentication;
 import views.html.registration;
 
-import javax.persistence.EntityManager;
-
 import static play.data.Form.*;
 
 public class SignUp extends Controller {
@@ -29,13 +27,23 @@ public class SignUp extends Controller {
         }
 
         if(filledForm.hasErrors()) {
-            return ok(
+            return badRequest(
                     registration.render("", filledForm)
             );
         } else {
             filledForm.get().save();
         }
         return redirect(routes.Application.authentication());
+    }
+
+    @Transactional
+    public static Result createSpieler() {
+        Form<Spieler> filledForm = form(Spieler.class).bindFromRequest();
+
+            Spieler sp = filledForm.get();
+
+            JPA.em().persist(sp);
+            return redirect(routes.Application.authentication());
     }
 
 }
