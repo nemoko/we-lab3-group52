@@ -17,21 +17,17 @@ public class Spieler implements User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
 
-    @Constraints.Required
     private String vorname;
 
-    @Constraints.Required
     private String nachname;
 
     @Formats.DateTime(pattern="yyyy-MM-dd")
     public Date birthday;
 
-    @Constraints.Required
     @Constraints.MinLength(4)
     @Constraints.MaxLength(16)
     public String username;
 
-    @Constraints.Required
     public String password;
 
     public String getVorname() {
@@ -52,7 +48,7 @@ public class Spieler implements User {
 
     @Override
     public String getName() {
-        return getVorname() + getNachname();
+        return getVorname() + " " + getNachname();
     }
 
     @Override

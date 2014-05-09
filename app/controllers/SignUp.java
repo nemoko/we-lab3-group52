@@ -42,7 +42,7 @@ public class SignUp extends Controller {
 
             Spieler sp = filledForm.get();
 
-            JPA.em().persist(sp);
+            sp.save();
             return redirect(routes.Application.authentication());
     }
 
