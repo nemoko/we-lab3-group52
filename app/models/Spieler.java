@@ -1,6 +1,7 @@
 package models;
 
 import play.data.validation.Constraints;
+import play.data.validation.ValidationError;
 import play.db.jpa.*;
 import java.util.*;
 import play.data.format.*;
@@ -20,6 +21,21 @@ public class Spieler implements User {
     private String vorname;
 
     private String nachname;
+
+    public enum Gender {
+        male,female;
+
+
+        public static List<String> gender() {
+            List<String> all = new ArrayList<String>();
+            all.add("male");
+            all.add("female");
+
+            return all;
+        }
+    }
+
+    private Gender gender;
 
     @Formats.DateTime(pattern="yyyy-MM-dd")
     public Date birthday;
@@ -44,6 +60,14 @@ public class Spieler implements User {
 
     public void setNachname(String nachname) {
         this.nachname = nachname;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     @Override

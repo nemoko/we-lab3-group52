@@ -35,4 +35,8 @@ public class SignUp extends Controller {
         }
         return redirect(routes.Application.authentication());
     }
+
+
+
+
 }

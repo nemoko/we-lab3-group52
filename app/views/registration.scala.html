@@ -31,6 +31,12 @@
                             '_showConstraints -> false
                         )
 
+                        @select(
+                            signupForm("gender"),
+                            options = options(Spieler.Gender.gender()),
+                            '_default -> "--- Pick your gender ---",
+                            '_label -> "Geschlecht:"
+                        )
                     </fieldset>
 
                     <fieldset>
