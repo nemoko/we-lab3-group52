@@ -2,9 +2,13 @@ package controllers;
 
 import models.Spieler;
 import play.data.Form;
+import play.db.jpa.JPA;
+import play.db.jpa.Transactional;
 import play.mvc.*;
 import views.html.authentication;
 import views.html.registration;
+
+import javax.persistence.EntityManager;
 
 import static play.data.Form.*;
 
@@ -13,6 +17,7 @@ public class SignUp extends Controller {
     /**
      * Handle the form submission.
      */
+    @Transactional
     public static Result submit() {
         Form<Spieler> filledForm = form(Spieler.class).bindFromRequest();
 
@@ -28,10 +33,9 @@ public class SignUp extends Controller {
                     registration.render("", filledForm)
             );
         } else {
-            //filledForm.get().save();
+            filledForm.get().save();
         }
-
-        return redirect("/");
+        return redirect(routes.Application.authentication());
     }
 
 }

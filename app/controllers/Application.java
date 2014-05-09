@@ -20,7 +20,7 @@ import static play.data.Form.form;
 
 public class Application extends Controller {
 
-    final static Form<Spieler> signupForm = form(Spieler.class);
+    final static Form<Spieler> signupForm = form(Spieler.class).bindFromRequest();
 
     public static Result authentication() {
 		return ok(authentication.render(""));

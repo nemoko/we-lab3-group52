@@ -30,13 +30,8 @@
                             '_label -> "Geburtstag:",
                             '_showConstraints -> false
                         )
+                        <div id="error_msg_birthdate" class="hide" role="alert">Verwenden Sie bitte folgendes Datumsformat: dd.mm.yyyy (z.B. 24.12.2012).</div>
 
-                        @select(
-                            signupForm("gender"),
-                            options = options(Spieler.gender()),
-                            '_default -> "--- Pick your gender ---",
-                            '_label -> "Geschlecht:"
-                        )
                     </fieldset>
 
                     <fieldset>

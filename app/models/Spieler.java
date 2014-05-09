@@ -6,35 +6,25 @@ import java.util.*;
 import play.data.format.*;
 
 import javax.persistence.*;
+import javax.validation.Constraint;
 
 import at.ac.tuwien.big.we14.lab2.api.User;
 
 @Entity
-@Access(AccessType.FIELD)
 public class Spieler implements User {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
-	 
+
+    @Constraints.Required
     public String vorname;
 
+    @Constraints.Required
     public String nachname;
 
     @Formats.DateTime(pattern="yyyy-MM-dd")
     public Date birthday;
-
-    public enum gender {
-        male, female;
-    }
-
-    public static List<String> gender() {
-        List<String> all = new ArrayList<String>();
-        all.add("male");
-        all.add("female");
-
-        return all;
-    }
 
     @Constraints.Required
     @Constraints.MinLength(4)
@@ -53,4 +43,9 @@ public class Spieler implements User {
 	public void setName(String name) {
 		this.nachname = name;
 	}
+
+    @Transactional
+    public void save() {
+        JPA.em().persist(this);
+    }
 }
