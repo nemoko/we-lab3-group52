@@ -13,4 +13,4 @@ GET         /quizover            controllers.Application.quizover()
 
 POST        /index               controllers.Application.index()
 POST        /quiz                controllers.Application.quiz()
-POST        /registration        controllers.SignUp.createSpieler()
+POST        /registration        controllers.SignUp.submit()

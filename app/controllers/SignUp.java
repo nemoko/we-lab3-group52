@@ -35,15 +35,4 @@ public class SignUp extends Controller {
         }
         return redirect(routes.Application.authentication());
     }
-
-    @Transactional
-    public static Result createSpieler() {
-        Form<Spieler> filledForm = form(Spieler.class).bindFromRequest();
-
-            Spieler sp = filledForm.get();
-
-            sp.save();
-            return redirect(routes.Application.authentication());
-    }
-
 }
