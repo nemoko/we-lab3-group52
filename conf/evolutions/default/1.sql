@@ -4,17 +4,14 @@
 # --- !Ups
 
 create table spieler (
-  id                        bigint not null,
+  id                        bigint auto_increment not null,
   vorname                   varchar(255),
   nachname                  varchar(255),
   birthday                  timestamp,
-  geschlecht                boolean,
   username                  varchar(255),
   password                  varchar(255),
   constraint pk_spieler primary key (id))
 ;
-
-create sequence spieler_seq;
 
 
 
@@ -26,6 +23,4 @@ SET REFERENTIAL_INTEGRITY FALSE;
 drop table if exists spieler;
 
 SET REFERENTIAL_INTEGRITY TRUE;
-
-drop sequence if exists spieler_seq;
 

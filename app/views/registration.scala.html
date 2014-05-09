@@ -28,7 +28,7 @@
                         @inputDate(
                             signupForm("birthday"),
                             '_label -> "Geburtstag:",
-                            '_error -> signupForm.error("Verwenden Sie bitte folgendes Datumsformat: dd.mm.yyyy (z.B. 24.12.2012).")
+                            '_showConstraints -> false
                         )
 
                         @select(
@@ -46,16 +46,19 @@
                             signupForm("username"),
                             '_label -> "Benutzername*",
                             'id -> "username",
-                            '_error -> signupForm.error("Der Benutzername muss mindestens 4 Zeichen und darf maximal 8 Zeichen enthalten.")
-                        ) validation.match(abbreviation, "{4,8}")
+                            '_showConstraints -> false
+                        )
+                        <div id="error_msg_username" class="hide" role="alert">Der Benutzername muss mindestens 4 Zeichen und darf maximal 8 Zeichen enthalten.</div>
 
                         @inputPassword(
                             signupForm("password"),
                             '_label -> "Passwort*",
                             'id -> "password",
-                            '_error -> signupForm.error("Das Passwort muss mindestens 4 Zeichen und darf maximal 8 Zeichen enthalten.")
-                        ) validation.match(abbreviation, "{4,8}")
+                            '_showConstraints -> false
+                        )
+                        <div id="error_msg_password" class="hide" role="alert">Das Passwort muss mindestens 4 Zeichen und darf maximal 8 Zeichen enthalten.</div>
 
+                        <input id="registersubmit" type="submit" value="Registrieren" accesskey="s"/>
                         <p id="requiredhint">Mit "*" gekennzeichnete Felder sind Pflichtfelder</p>
                     </fieldset>
                 }

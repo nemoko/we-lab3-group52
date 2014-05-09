@@ -8,7 +8,7 @@ import views.html.registration;
 
 import static play.data.Form.*;
 
-public class SignUp {
+public class SignUp extends Controller {
 
     /**
      * Handle the form submission.
@@ -28,10 +28,10 @@ public class SignUp {
                     registration.render("", filledForm)
             );
         } else {
-            filledForm.get().save();
+            //filledForm.get().save();
         }
 
-        return redirect(authentication.render(""));
+        return redirect("/");
     }
 
 }
