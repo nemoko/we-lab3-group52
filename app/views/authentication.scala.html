@@ -1,26 +1,41 @@
-@(message: String)
+@(form: Form[Application.Login])
 
-@main(null, "- Login","loginpage") {
+@main(null, "- 2Login","loginpage") {
 
 		<!-- Login section -->
         <section role="main">
             <section id="login" aria-labelledby="loginheading">
-                <form action="/index" method="post">
-                    <fieldset>
-                        <legend id="loginheading">Login</legend>
-                        <label for="username">Benutzername:</label>
-                        <input id="username" type="text" required="required"/>
-                        <label for="password">Passwort:</label>
-                        <input id="password" type="password" required="required"/>
-                        <input id="loginsubmit" type="submit" value="Anmelden"/>
-                    </fieldset>
-                </form>
+
+                @helper.form(routes.Application.authenticate) {
+                    <legend id="loginheading">Login</legend>
+
+                    @if(form.hasGlobalErrors) {
+                        <p class="error">
+                        @form.globalError.message
+                        </p>
+                    }
+
+                    @if(flash.contains("success")) {
+                        <p class="success">
+                        @flash.get("success")
+                        </p>
+                    }
+
+                    <label for="username">Benutzername:</label>
+                    <input id="username" type="username" name="username" value="@form("username").value">
+
+                    <label for="password">Passwort:</label>
+                    <input id="password" type="password" name="password">
+
+                    <input id="loginsubmit" type="submit" value="Anmelden"/>
+                }
+
             </section>
             <!-- Register section -->
             <section id="register" aria-labelledby="registerheading">
                 <h2 id="registerheading" class="accessibility">Registrierung</h2>
                 <p>Nicht registriert?</p>
-                <a href="/registration">Zur Registierung</a>
+                <a href="@routes.Application.registration">Zur Registierung</a>
             </section>
         </section>
 

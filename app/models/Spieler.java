@@ -9,6 +9,7 @@ import play.data.format.*;
 import javax.persistence.*;
 import javax.validation.Constraint;
 
+
 import at.ac.tuwien.big.we14.lab2.api.User;
 
 @javax.persistence.Entity
@@ -70,6 +71,22 @@ public class Spieler implements User {
         this.gender = gender;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String getName() {
         return getVorname() + " " + getNachname();
@@ -77,8 +94,13 @@ public class Spieler implements User {
 
     @Override
     public void setName(String s) {
-        setVorname(s.substring(0,s.lastIndexOf(' ')));
-        setNachname(s.substring(s.lastIndexOf(' ')));
+        if(s.contains(" ")) {
+            setVorname(s.substring(0, s.lastIndexOf(' ')));
+            setNachname(s.substring(s.lastIndexOf(' ')));
+        } else {
+            setVorname(s);
+            setNachname("");
+        }
     }
 
     @Transactional

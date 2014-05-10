@@ -22,8 +22,8 @@
 		<ul>
 			@if(connected != null){
 			<li><a id="logoutlink" title="Klicke hier um dich abzumelden"
-				href="../" accesskey="l">Abmelden</a></li> } else {
-			<li><a id="loginlink" title="Klicke hier um dich anzumelden" href="../" accesskey="l">Anmelden</a></li>
+				href="@routes.Application.logout()" accesskey="l">Abmelden</a></li> } else {
+			<li><a id="loginlink" title="Klicke hier um dich anzumelden" href="@routes.Application.authentication" accesskey="l">Anmelden</a></li>
 			}
 		</ul>
 	</nav>

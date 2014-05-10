@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import at.ac.tuwien.big.we14.lab2.api.User;
 import models.Spieler;
 import at.ac.tuwien.big.we14.lab2.api.*;
 import at.ac.tuwien.big.we14.lab2.api.impl.*;
+import org.h2.engine.*;
 import play.cache.Cache;
 import play.data.Form;
+import play.data.validation.Constraints;
+import play.i18n.Messages;
 import play.mvc.*;
 import views.html.*;
 
@@ -22,9 +26,94 @@ public class Application extends Controller {
 
     final static Form<Spieler> signupForm = form(Spieler.class).bindFromRequest();
 
+
+    // http://www.playframework.com/documentation/2.1.1/JavaGuide4
     public static Result authentication() {
-		return ok(authentication.render(""));
+		return ok(authentication.render(form(Login.class)));
 	}
+    /**
+     * Login class used by Authentication Form.
+     */
+    public static class Login {
+
+        @Constraints.Required
+        public String username;
+
+        @Constraints.Required
+        public String password;
+
+        /**
+         * Validate the authentication.
+         *
+         * @return null if validation ok, string with details otherwise
+         */
+        public String validate() {
+            //TODO implement
+            return null;
+        }
+    }
+
+//    /**
+//     * Register class used by Registration Form.
+//     */
+//    public static class Register {
+//
+//        @Constraints.Required
+//        public String username;
+//
+//        @Constraints.Required
+//        public String password;
+//
+//        /**
+//         * Validate the authentication.
+//         *
+//         * @return null if validation ok, string with details otherwise
+//         */
+//        public String validate() {
+//            if (isBlank(username)) {
+//                return "Full name is required";
+//            }
+//
+//            if (isBlank(password)) {
+//                return "Password is required";
+//            }
+//
+//            return null;
+//        }
+//
+//        private boolean isBlank(String input) {
+//            return input == null || input.isEmpty() || input.trim().isEmpty();
+//        }
+//    }
+
+    @play.db.jpa.Transactional
+    public static Result authenticate() { //TODO check if user exists in DB
+        Form<Login> loginForm = form(Login.class).bindFromRequest();
+
+        if(!loginForm.hasErrors()) {
+            session().clear();
+            session("username", loginForm.get().username);
+
+            if(SignUp.authenticate(loginForm.get().username,loginForm.get().password)) {
+                return redirect(
+                        routes.Application.quiz_new_player()
+                );
+            }
+        }
+
+        return badRequest(authentication.render(loginForm));
+    }
+
+
+
+    public static Result logout() {
+        session().clear();
+        flash("success", "You've been logged out");
+        return redirect(
+                routes.Application.authentication()
+        );
+    }
+
 
 	public static Result index() {
 		return ok(index.render(""));
@@ -34,11 +123,12 @@ public class Application extends Controller {
 		return ok(registration.render("", signupForm));
 	}
 
+    @Security.Authenticated(Secured.class)
 	public static Result quiz_new_player() {
 		
 		QuizGame game = (QuizGame) Cache.get("game");
 		User user = new Spieler();
-		user.setName("Tomas");
+		user.setName(signupForm.get().username);
 		
 		if(game == null){
 			// Neues Spiel starten
@@ -81,6 +171,7 @@ public class Application extends Controller {
 		return ok(quiz.render(game_infos, allChoicesInString));
 	}
 
+    @Security.Authenticated(Secured.class)
 	public static Result quiz() {
 		
 		// Das Spiel vom Cache laden
@@ -189,6 +280,7 @@ public class Application extends Controller {
 		return selectedChoices;
 	}
 
+    @Security.Authenticated(Secured.class)
 	public static Result roundover() {
 
 		// Das Spiel vom Cache laden
@@ -220,6 +312,7 @@ public class Application extends Controller {
 		return ok(roundover.render(game_infos));
 	}
 
+    @Security.Authenticated(Secured.class)
 	public static Result quizover() {
 		
 		QuizGame game = (QuizGame) Cache.get("game");
@@ -239,5 +332,4 @@ public class Application extends Controller {
 		
 		return ok(quizover.render(game_infos));
 	}
-
 }
