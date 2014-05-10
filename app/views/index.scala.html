@@ -3,7 +3,9 @@
 @main(null, "- Start", "startpage") {
 
     <section role="main" id="quiz">
-        <a id="startgame" href="/quiz">Quiz starten</a>
+        @helper.form(routes.Application.quiz_new_player) {
+        	<input id="startgame" type="submit" value="Quiz starten"/>
+        }
     </section>
 	
 }

@@ -30,7 +30,9 @@
                     </ul>
                     <p id="player2roundcounter" class="playerroundcounter">Gewonnene Runden: <span id="player2wonrounds" class="playerwonrounds">@game_infos.get(11)</span></p>
                 </div>
-                <a id="next" href="/quiz">Weiter</a>
+                @helper.form(routes.Application.quiz_new_player) {
+                	<input id="next" type="submit" value="Weiter"/>
+                }
             </section>
         </section>
 	

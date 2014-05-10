@@ -1,120 +1,126 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import at.ac.tuwien.big.we14.lab2.api.QuizGame;
 import at.ac.tuwien.big.we14.lab2.api.User;
 import models.Spieler;
 import at.ac.tuwien.big.we14.lab2.api.*;
 import at.ac.tuwien.big.we14.lab2.api.impl.*;
+
 import org.h2.engine.*;
+
+import play.i18n.Lang;
 import play.cache.Cache;
 import play.data.Form;
 import play.data.validation.Constraints;
-import play.i18n.Messages;
 import play.mvc.*;
 import views.html.*;
-
 import static play.data.Form.form;
 
-//TODO: session http://www.playframework.com/documentation/1.2/cache
-//TODO: timeleft
-//TODO: nach der 5. Runde soll noch roundover kommen
 
 public class Application extends Controller {
 
-    final static Form<Spieler> signupForm = form(Spieler.class).bindFromRequest();
+	final static Form<Spieler> signupForm = form(Spieler.class)
+			.bindFromRequest();
 
+	// http://www.playframework.com/documentation/2.1.1/JavaGuide4
+	public static Result authentication() {
+		session().clear();
 
-    // http://www.playframework.com/documentation/2.1.1/JavaGuide4
-    public static Result authentication() {
+		if(session("uuid") != null && Cache.get(session("uuid")) != null){
+			Cache.remove(session("uuid"));
+		}
 		return ok(authentication.render(form(Login.class)));
 	}
-    /**
-     * Login class used by Authentication Form.
-     */
-    public static class Login {
 
-        @Constraints.Required
-        public String username;
+	/**
+	 * Login class used by Authentication Form.
+	 */
+	public static class Login {
 
-        @Constraints.Required
-        public String password;
+		@Constraints.Required
+		public String username;
 
-        /**
-         * Validate the authentication.
-         *
-         * @return null if validation ok, string with details otherwise
-         */
-        public String validate() {
-            //TODO implement
-            return null;
-        }
-    }
+		@Constraints.Required
+		public String password;
 
-//    /**
-//     * Register class used by Registration Form.
-//     */
-//    public static class Register {
-//
-//        @Constraints.Required
-//        public String username;
-//
-//        @Constraints.Required
-//        public String password;
-//
-//        /**
-//         * Validate the authentication.
-//         *
-//         * @return null if validation ok, string with details otherwise
-//         */
-//        public String validate() {
-//            if (isBlank(username)) {
-//                return "Full name is required";
-//            }
-//
-//            if (isBlank(password)) {
-//                return "Password is required";
-//            }
-//
-//            return null;
-//        }
-//
-//        private boolean isBlank(String input) {
-//            return input == null || input.isEmpty() || input.trim().isEmpty();
-//        }
-//    }
+		/**
+		 * Validate the authentication.
+		 * 
+		 * @return null if validation ok, string with details otherwise
+		 */
+		public String validate() {
+			// TODO implement
+			return null;
+		}
+	}
 
-    @play.db.jpa.Transactional
-    public static Result authenticate() { //TODO check if user exists in DB
-        Form<Login> loginForm = form(Login.class).bindFromRequest();
+	// /**
+	// * Register class used by Registration Form.
+	// */
+	// public static class Register {
+	//
+	// @Constraints.Required
+	// public String username;
+	//
+	// @Constraints.Required
+	// public String password;
+	//
+	// /**
+	// * Validate the authentication.
+	// *
+	// * @return null if validation ok, string with details otherwise
+	// */
+	// public String validate() {
+	// if (isBlank(username)) {
+	// return "Full name is required";
+	// }
+	//
+	// if (isBlank(password)) {
+	// return "Password is required";
+	// }
+	//
+	// return null;
+	// }
+	//
+	// private boolean isBlank(String input) {
+	// return input == null || input.isEmpty() || input.trim().isEmpty();
+	// }
+	// }
 
-        if(!loginForm.hasErrors()) {
-            session().clear();
-            session("username", loginForm.get().username);
+	@play.db.jpa.Transactional
+	public static Result authenticate() { // TODO check if user exists in DB
+		Form<Login> loginForm = form(Login.class).bindFromRequest();
 
-            if(SignUp.authenticate(loginForm.get().username,loginForm.get().password)) {
-                return redirect(
-                        routes.Application.quiz_new_player()
-                );
-            }
-        }
+		if (!loginForm.hasErrors()) {
+			session().clear();
+			session("username", loginForm.get().username);
 
-        return badRequest(authentication.render(loginForm));
-    }
+			if(session("uuid") != null && Cache.get(session("uuid")) != null){
+				Cache.remove(session("uuid"));
+			}
 
+			
+			if (SignUp.authenticate(loginForm.get().username,
+					loginForm.get().password)) {
+				return redirect(routes.Application.index());
+			}
+		}
 
+		return badRequest(authentication.render(loginForm));
+	}
 
-    public static Result logout() {
-        session().clear();
-        flash("success", "You've been logged out");
-        return redirect(
-                routes.Application.authentication()
-        );
-    }
+	public static Result logout() {
+		session().clear();
+		flash("success", "You've been logged out");
+		return redirect(routes.Application.authentication());
+	}
 
-
+	@Security.Authenticated(Secured.class)
 	public static Result index() {
 		return ok(index.render(""));
 	}
@@ -123,21 +129,32 @@ public class Application extends Controller {
 		return ok(registration.render("", signupForm));
 	}
 
-    @Security.Authenticated(Secured.class)
+	@Security.Authenticated(Secured.class)
 	public static Result quiz_new_player() {
-		
-		QuizGame game = (QuizGame) Cache.get("game");
+
+		// Check if session has ID. If not, set it
+		if (session("uuid") == null)
+			giveSessionID();
+
+		QuizGame game = (QuizGame) Cache.get(session("uuid"));
+
 		User user = new Spieler();
-		user.setName(signupForm.get().username);
-		
-		if(game == null){
+
+		user.setName(session("username"));
+
+		if (game == null) {
 			// Neues Spiel starten
 			QuizFactory factory = new PlayQuizFactory("conf/data.de.json", user);
 			game = factory.createQuizGame();
+			session("last_roundover", "false");
 		} else {
 			user = game.getPlayers().get(0);
+
+			if (game.isGameOver() && session("last_roundover").equals("true")) {
+				return quizover();
+			}
 		}
-		
+
 		game.startNewRound(); // start new game/round
 		Round round = game.getCurrentRound();// current round
 		Question question = round.getCurrentQuestion(user); // current question
@@ -166,23 +183,35 @@ public class Application extends Controller {
 		}
 
 		// Das Spiel im Cache speichern
-		Cache.set("game", game);
+		Cache.set(session("uuid"), game);
 
 		return ok(quiz.render(game_infos, allChoicesInString));
 	}
 
-    @Security.Authenticated(Secured.class)
+	@Security.Authenticated(Secured.class)
+	private static void giveSessionID() {
+		String uuid = java.util.UUID.randomUUID().toString();
+		session("uuid", uuid);
+	}
+
+	@Security.Authenticated(Secured.class)
 	public static Result quiz() {
-		
+
 		// Das Spiel vom Cache laden
-		QuizGame game = (QuizGame) Cache.get("game");
+		QuizGame game = (QuizGame) Cache.get(session("uuid"));
+
+		if (game.isGameOver() && 
+				session("last_roundover").equals("true")) {
+			return quizover();
+		}
 
 		// get request value from submitted form
 		Map<String, String[]> map = request().body().asFormUrlEncoded();
-		
+
 		// get selected answers
 		String[] checkedVal = map.get("answers");
-
+		String time_left = map.get("timeleftvalue")[0];
+		
 		User user = game.getPlayers().get(0);
 		User computer = game.getPlayers().get(1);
 
@@ -197,11 +226,9 @@ public class Application extends Controller {
 			choices_clicked = new ArrayList<Choice>();
 		}
 
-		game.answerCurrentQuestion(user, choices_clicked, 10);
+		game.answerCurrentQuestion(user, choices_clicked, Integer.parseInt(time_left));
 
-		if (game.isGameOver()) {
-			return quizover();
-		} else if (game.isRoundOver()) {
+		if (game.isRoundOver()) {
 			return roundover();
 		}
 
@@ -216,7 +243,8 @@ public class Application extends Controller {
 		game_infos.add(computer.getName());
 
 		game_infos.add(getCorrectString(round.getAnswer(0, user).isCorrect()));
-		game_infos.add(getCorrectString(round.getAnswer(0, computer).isCorrect()));
+		game_infos.add(getCorrectString(round.getAnswer(0, computer)
+				.isCorrect()));
 
 		if (round.getAnswer(1, user) != null) {
 			game_infos.add(getCorrectString(round.getAnswer(1, user)
@@ -251,9 +279,19 @@ public class Application extends Controller {
 			allChoicesInString.add(c.getText());
 		}
 
-		Cache.set("game", game);
+		Cache.set(session("uuid"), game);
 
 		return ok(quiz.render(game_infos, allChoicesInString));
+	}
+
+	@Security.Authenticated(Secured.class)
+	public static Result quiz_info() {
+
+		if(session("uuid") != null && Cache.get(session("uuid")) != null){
+			Cache.remove(session("uuid"));
+		}
+		
+		return quiz_new_player();
 	}
 
 	private static String getCorrectString(boolean correct) {
@@ -280,11 +318,16 @@ public class Application extends Controller {
 		return selectedChoices;
 	}
 
-    @Security.Authenticated(Secured.class)
+	@Security.Authenticated(Secured.class)
 	public static Result roundover() {
 
 		// Das Spiel vom Cache laden
-		QuizGame game = (QuizGame) Cache.get("game");
+		QuizGame game = (QuizGame) Cache.get(session("uuid"));
+
+		if (game.isGameOver()) {
+			session("last_roundover", "true");
+		}
+
 		Round round = game.getCurrentRound();
 		User user = game.getPlayers().get(0);
 		User computer = game.getPlayers().get(1);
@@ -293,7 +336,7 @@ public class Application extends Controller {
 		ArrayList<String> game_infos = new ArrayList<String>();
 
 		String winner = "Kein Gewinner";
-		if(round.getRoundWinner() != null){
+		if (round.getRoundWinner() != null) {
 			winner = round.getRoundWinner().getName();
 		}
 		game_infos.add(winner);
@@ -304,32 +347,35 @@ public class Application extends Controller {
 		game_infos.add(getCorrectString(round.getAnswer(1, user).isCorrect()));
 		game_infos.add(getCorrectString(round.getAnswer(2, user).isCorrect()));
 		game_infos.add("" + game.getWonRounds(user));
-		game_infos.add(getCorrectString(round.getAnswer(0, computer).isCorrect()));
-		game_infos.add(getCorrectString(round.getAnswer(1, computer).isCorrect()));
-		game_infos.add(getCorrectString(round.getAnswer(2, computer).isCorrect()));
+		game_infos.add(getCorrectString(round.getAnswer(0, computer)
+				.isCorrect()));
+		game_infos.add(getCorrectString(round.getAnswer(1, computer)
+				.isCorrect()));
+		game_infos.add(getCorrectString(round.getAnswer(2, computer)
+				.isCorrect()));
 		game_infos.add("" + game.getWonRounds(computer));
 
 		return ok(roundover.render(game_infos));
 	}
 
-    @Security.Authenticated(Secured.class)
+	@Security.Authenticated(Secured.class)
 	public static Result quizover() {
-		
-		QuizGame game = (QuizGame) Cache.get("game");
-		
+
+		QuizGame game = (QuizGame) Cache.get(session("uuid"));
+
 		// ArrayList mit Informationen des Spiels befüllen
 		ArrayList<String> game_infos = new ArrayList<String>();
-		
+
 		String winner = "Kein Gewinner";
-		if(game.getWinner() != null){
+		if (game.getWinner() != null) {
 			winner = game.getWinner().getName();
 		}
 		game_infos.add(winner);
-		game_infos.add(""+game.getWonRounds(game.getPlayers().get(0)));
-		game_infos.add(""+game.getWonRounds(game.getPlayers().get(1)));
-		
-		Cache.set("game", null, 0);
-		
+		game_infos.add("" + game.getWonRounds(game.getPlayers().get(0)));
+		game_infos.add("" + game.getWonRounds(game.getPlayers().get(1)));
+
+		Cache.set(session("uuid"), null, 0);
+
 		return ok(quizover.render(game_infos));
 	}
 }
