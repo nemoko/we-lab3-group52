@@ -24,18 +24,26 @@ public class SignUp extends Controller {
     public static Result submit() {
         Form<Application.Register> filledForm = form(Application.Register.class).bindFromRequest();
 
-        // Check if the username is valid //TODO check if username already exists
-        if(filledForm.hasErrors()) {
-            return badRequest(
-                    registration.render("", filledForm)
-            );
-        } else {
+
+        if(!filledForm.hasErrors()) {
+            if(filledForm.get().username.equals("admin") || filledForm.get().username.equals("guest")) {
+                filledForm.reject("username", "This username is already taken");
+            }
             if(filledForm.get().username.equals("admin") || filledForm.get().username.equals("guest"))
                 filledForm.reject("username", "This username is already taken");
 
             if(findSpieler(filledForm.get().username) != null) {
                 filledForm.reject("username", "This username is already taken");
             }
+
+        }
+
+        // Check if the username is valid //TODO check if username already exists
+        if(filledForm.hasErrors()) {
+            return badRequest(
+                    registration.render("", filledForm)
+            );
+        } else {
 
             new Spieler(filledForm.get()).save();
 
@@ -56,7 +64,6 @@ public class SignUp extends Controller {
         for(Spieler s : allPlayers) {
             if(s.getUsername().equals(username)) return s;
         }
-
         return null;
     }
 
@@ -69,6 +76,4 @@ public class SignUp extends Controller {
 
         return false;
     }
-
-
 }
