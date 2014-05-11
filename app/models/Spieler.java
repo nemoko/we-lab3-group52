@@ -1,5 +1,6 @@
 package models;
 
+import controllers.Application;
 import play.data.validation.Constraints;
 import play.data.validation.ValidationError;
 import play.db.jpa.*;
@@ -49,13 +50,22 @@ public class Spieler implements User {
     @Constraints.MaxLength(16)
     public String password;
 
-    /*public List<ValidationError> validate() {
-        List<ValidationError> errors = null;
-        if (!Character.isUpperCase(username.charAt(0))) {
-            errors = new ArrayList<ValidationError>();
-            errors.add(new ValidationError("username", "Must start with upper case letter"));
+    public Spieler(){
+        super();
+    }
+    public Spieler(Application.Register reg){
+        vorname=reg.vorname;
+        nachname=reg.nachname;
+        gender=reg.gender;
+        birthday=reg.birthday;
+        username=reg.username;
+        password=reg.password;
+    }
+    /*public String validate() {
+        if (username.length() == 0) {
+            return error1;
         }
-        return errors;
+        return null;
     }*/
 
     public String getVorname() {

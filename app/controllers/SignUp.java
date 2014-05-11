@@ -22,7 +22,7 @@ public class SignUp extends Controller {
      */
     @Transactional
     public static Result submit() {
-        Form<Spieler> filledForm = form(Spieler.class).bindFromRequest();
+        Form<Application.Register> filledForm = form(Application.Register.class).bindFromRequest();
 
         // Check if the username is valid //TODO check if username already exists
         if(filledForm.hasErrors()) {
@@ -37,7 +37,8 @@ public class SignUp extends Controller {
                 filledForm.reject("username", "This username is already taken");
             }
 
-            filledForm.get().save();
+            new Spieler(filledForm.get()).save();
+
         }
         return redirect(routes.Application.authentication()); //TODO call without Form?
     }

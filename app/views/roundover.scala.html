@@ -7,7 +7,7 @@
             <!-- winner message -->
             <section id="roundwinner" aria-labelledby="roundwinnerheading">
                 <h2 id="roundwinnerheading" class="accessibility">@Messages.get("roundResult")</h2>
-                <p class="roundwinnermessage">@game_infos.get(0) @Messages.get("winsRound") @game_infos.get(1)!</p>
+                <p class="roundwinnermessage">@(if(game_infos.get(0).equals(game_infos.get(2)))(game_infos.get(2))else(Messages.get("computer"))) @Messages.get("winsRound") @game_infos.get(1)!</p>
             </section>
         
             <!-- round info -->    
@@ -23,7 +23,7 @@
                     <p id="player1roundcounter" class="playerroundcounter">@Messages.get("roundsWon"): <span id="player1wonrounds" class="playerwonrounds">@game_infos.get(7)</span></p>
                 </div>
                 <div id="player2info" class="playerinfo">
-                    <span id="player2name" class="playername">@game_infos.get(3)</span>
+                    <span id="player2name" class="playername">@Messages.get("computer")</span>
                     <ul class="playerroundsummary">
                         <li><span class="accessibility">@Messages.get("question") 1:</span><span id="player2answer1" class=@game_infos.get(8)>@Messages.get("correct")</span></li>
                         <li><span class="accessibility">@Messages.get("question") 2:</span><span id="player2answer2" class=@game_infos.get(9)>@Messages.get("correct")</span></li>

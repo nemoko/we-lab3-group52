@@ -1,9 +1,6 @@
 package controllers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import at.ac.tuwien.big.we14.lab2.api.QuizGame;
 import at.ac.tuwien.big.we14.lab2.api.User;
@@ -13,6 +10,7 @@ import at.ac.tuwien.big.we14.lab2.api.impl.*;
 
 import org.h2.engine.*;
 
+import play.data.format.Formats;
 import play.data.validation.ValidationError;
 import play.i18n.Lang;
 import play.cache.Cache;
@@ -25,8 +23,10 @@ import static play.data.Form.form;
 
 public class Application extends Controller {
 
-	final static Form<Spieler> signupForm = form(Spieler.class)
-			.bindFromRequest();
+	/*final static Form<Spieler> signupForm = form(Spieler.class)
+			.bindFromRequest();*/
+    final static Form<Register> signupForm = form(Register.class)
+            .bindFromRequest();
 
 	// http://www.playframework.com/documentation/2.1.1/JavaGuide4
 	public static Result authentication() {
@@ -48,10 +48,10 @@ public class Application extends Controller {
 	 */
 	public static class Login {
 
-		@Constraints.Required(message = "required.message")
+		//@Constraints.Required(message = "required.message")
 		public String username;
 
-		@Constraints.Required(message = "Enter Password")
+		//@Constraints.Required(message = "Enter Password")
 		public String password;
 
 		/**
@@ -61,45 +61,76 @@ public class Application extends Controller {
 		 */
 		public String validate() {
             //String errors = null;
-            if (username.length() == 0 || password.length() == 0) {
-                return "Username/Password invalid";
+            if (isBlank(username)) {
+                return "Please enter a username";
+            } else if (isBlank(password)) {
+                return "Please enter password";
             }
 			return null;
 		}
+
+        private boolean isBlank(String input) {
+            return input == null || input.isEmpty() || input.trim().isEmpty();
+        }
 	}
 
-	// /**
-	// * Register class used by Registration Form.
-	// */
-	// public static class Register {
-	//
-	// @Constraints.Required
-	// public String username;
-	//
-	// @Constraints.Required
-	// public String password;
-	//
-	// /**
-	// * Validate the authentication.
-	// *
-	// * @return null if validation ok, string with details otherwise
-	// */
-	// public String validate() {
-	// if (isBlank(username)) {
-	// return "Full name is required";
-	// }
-	//
-	// if (isBlank(password)) {
-	// return "Password is required";
-	// }
-	//
-	// return null;
-	// }
-	//
-	// private boolean isBlank(String input) {
-	// return input == null || input.isEmpty() || input.trim().isEmpty();
-	// }
-	// }
+	/**
+	* Register class used by Registration Form.
+	*/
+    public static class Register {
+        public String vorname;
+
+        public String nachname;
+
+        /*public enum Gender {
+            male,female;
+
+
+            public static List<String> gender() {
+                List<String> all = new ArrayList<String>();
+                all.add("male");
+                all.add("female");
+
+                return all;
+            }
+        } */
+
+        public Spieler.Gender gender;
+
+        @Formats.DateTime(pattern="yyyy-MM-dd")
+        public Date birthday;
+
+        //@Constraints.MinLength(4)
+        //@Constraints.MaxLength(16)
+        public String username;
+
+        //@Constraints.MinLength(4)
+        //@Constraints.MaxLength(16)
+        public String password;
+
+	    /**
+	     * Validate the authentication.
+	     *
+	     * @return null if validation ok, string with details otherwise
+	     */
+	    public String validate() {
+	        if (isBlank(username)) {
+	            return "Username is required";
+	        } else if (username.length()<4 || username.length()>8) {
+                return "Username must be between 4 and 8 symbols";
+            } else if (isBlank(password)) {
+	            return "Password is required";
+	        } else if (password.length()<4 || password.length()>8) {
+                return "Password must be between 4 and 8 symbols";
+            }
+
+	        return null;
+	    }
+
+	     private boolean isBlank(String input) {
+	         return input == null || input.isEmpty() || input.trim().isEmpty();
+	     }
+    }
 
 	@play.db.jpa.Transactional
 	public static Result authenticate() { // TODO check if user exists in DB
@@ -386,6 +417,8 @@ public class Application extends Controller {
 		game_infos.add(winner);
 		game_infos.add("" + game.getWonRounds(game.getPlayers().get(0)));
 		game_infos.add("" + game.getWonRounds(game.getPlayers().get(1)));
+        game_infos.add("" + game.getPlayers().get(0).getName());
+        game_infos.add("" + game.getPlayers().get(1).getName());
 
 		Cache.set(session("uuid"), null, 0);
 

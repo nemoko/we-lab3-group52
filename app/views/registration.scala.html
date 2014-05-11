@@ -1,4 +1,4 @@
-@(message: String, signupForm: Form[Spieler])
+@(message: String, signupForm: Form[Application.Register])
 
 @import helper._
 @import helper.twitterBootstrap._
@@ -42,6 +42,12 @@
 
                     <fieldset>
                         <legend>@Messages.get("loginData")</legend>
+
+                        @if(signupForm.hasGlobalErrors) {
+                        <p class="error">
+                            @signupForm.globalError.message
+                        </p>
+                        }
 
                         @inputText(
                             signupForm("username"),
