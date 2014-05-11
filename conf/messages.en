@@ -1,0 +1,38 @@
+username=Username
+password=Password
+login=Login
+logout=Logout
+navigation=Navigation
+registerHeading=Register
+notRegistered=Not yet registered
+toRegistration=To registration
+personalData=Personal Data
+firstName=First Name
+lastName=Last Name
+birthDate=Birth Date
+sex=Sex
+pickYourSex=Pick your Sex
+loginData=Login Data
+register=Register
+mandatoryFields=Fields marked with "*" are mandatory.
+startQuiz=Start Quiz
+player=Player
+continue=Continue
+category=Category
+remainingTime=Time remaining
+lastGame=Last game
+never=Never
+roundResult=Round result
+playerInfo=Player info
+roundsWon=Rounds won
+winsRound=wins round
+question=Question
+correct=Correct
+wrong=Wrong
+unknown=Unknown
+quizResult=Quiz result
+wins=wins
+newGame=New game
+
+
+

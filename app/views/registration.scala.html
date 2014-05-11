@@ -2,62 +2,63 @@
 
 @import helper._
 @import helper.twitterBootstrap._
+@import play.i18n.Messages
 
 @main(null, "- Registrieren", "registerpage") {
 
 	<section role="main" id="register" aria-labelledby="registerheading">
             <!-- Register section -->
-            <h2 id="registerheading" class="accessibility">Registrierung</h2>
+            <h2 id="registerheading" class="accessibility">@Messages.get("registerHeading")</h2>
 
                 @helper.form(action = routes.SignUp.submit) {
                     <fieldset>
-                        <legend>Persönliche Daten</legend>
+                        <legend>@Messages.get("personalData")</legend>
 
                         @inputText(
                             signupForm("vorname"),
-                            '_label -> "Vorname:",
+                            '_label -> Messages.get("firstName").concat(":"),
                             'id -> "firstname"
                         )
 
                         @inputText(
                             signupForm("nachname"),
-                            '_label -> "Nachname:",
+                            '_label -> (Messages.get("lastName")+":"),
                             'id -> "lastname"
                         )
 
                         @inputDate(
                             signupForm("birthday"),
-                            '_label -> "Geburtstag:",
+                            '_label -> (Messages.get("birthDate")+":"),
                             '_showConstraints -> false
                         )
 
                         @select(
                             signupForm("gender"),
                             options = options(Spieler.Gender.gender()),
-                            '_default -> "--- Pick your gender ---",
-                            '_label -> "Geschlecht:"
+                            '_default -> ("--- "+Messages.get("pickYourSex")+" ---"),
+                            '_label -> (Messages.get("sex")+":")
                         )
                     </fieldset>
 
                     <fieldset>
-                        <legend>Login Daten</legend>
+                        <legend>@Messages.get("loginData")</legend>
 
                         @inputText(
                             signupForm("username"),
-                            '_label -> "Benutzername*",
+                            '_label -> (Messages.get("username")+"*"),
                             'id -> "username",
                             '_showConstraints -> false
                         )
 
                         @inputPassword(
                             signupForm("password"),
-                            '_label -> "Passwort*",
+                            '_label -> (Messages.get("password")+"*"),
                             'id -> "password",
                             '_showConstraints -> false
                         )
 
-                        <input id="registersubmit" type="submit" value="Registrieren" accesskey="s"/>
-                        <p id="requiredhint">Mit "*" gekennzeichnete Felder sind Pflichtfelder</p>
+                        <input id="registersubmit" type="submit" value='@Messages.get("register")' accesskey="s"/>
+                        <p id="requiredhint">@Messages.get("mandatoryFields")</p>
                     </fieldset>
                 }
         </section>

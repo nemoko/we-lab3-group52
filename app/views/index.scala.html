@@ -1,10 +1,11 @@
 @(message: String)
+@import play.i18n.Messages
 
 @main("connected", "- Start", "startpage") {
 
     <section role="main" id="quiz">
         @helper.form(routes.Application.quiz_new_player) {
-        	<input id="startgame" type="submit" value="Quiz starten"/>
+        	<input id="startgame" type="submit" value='@Messages.get("startQuiz")'/>
         }
     </section>
 	

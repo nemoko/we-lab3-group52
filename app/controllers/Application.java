@@ -13,6 +13,7 @@ import at.ac.tuwien.big.we14.lab2.api.impl.*;
 
 import org.h2.engine.*;
 
+import play.data.validation.ValidationError;
 import play.i18n.Lang;
 import play.cache.Cache;
 import play.data.Form;
@@ -20,7 +21,7 @@ import play.data.validation.Constraints;
 import play.mvc.*;
 import views.html.*;
 import static play.data.Form.form;
-
+//import play.api.i18n.Lang;
 
 public class Application extends Controller {
 
@@ -37,15 +38,20 @@ public class Application extends Controller {
 		return ok(authentication.render(form(Login.class)));
 	}
 
+    public static Result authenticationLang(String lang) {
+        changeLang(lang);
+        return authentication();
+    }
+
 	/**
 	 * Login class used by Authentication Form.
 	 */
 	public static class Login {
 
-		@Constraints.Required
+		@Constraints.Required(message = "required.message")
 		public String username;
 
-		@Constraints.Required
+		@Constraints.Required(message = "Enter Password")
 		public String password;
 
 		/**
@@ -54,7 +60,10 @@ public class Application extends Controller {
 		 * @return null if validation ok, string with details otherwise
 		 */
 		public String validate() {
-			// TODO implement
+            //String errors = null;
+            if (username.length() == 0 || password.length() == 0) {
+                return "Username/Password invalid";
+            }
 			return null;
 		}
 	}
@@ -108,7 +117,10 @@ public class Application extends Controller {
 			if (SignUp.authenticate(loginForm.get().username,
 					loginForm.get().password)) {
 				return redirect(routes.Application.index());
-			}
+			} else {
+                flash("success", "Username/Password invalid"); //TODO: Improve error message
+                return redirect(routes.Application.authentication());
+            }
 		}
 
 		return badRequest(authentication.render(loginForm));
@@ -144,7 +156,8 @@ public class Application extends Controller {
 
 		if (game == null) {
 			// Neues Spiel starten
-			QuizFactory factory = new PlayQuizFactory("conf/data.de.json", user);
+            String lang = Controller.lang().language();
+			QuizFactory factory = new PlayQuizFactory("conf/data."+lang+".json", user);
 			game = factory.createQuizGame();
 			session("last_roundover", "false");
 		} else {

@@ -1,4 +1,5 @@
 @(connected: String, titleName: String, page: String)(content: Html)
+@import play.i18n.Messages
 
 <!DOCTYPE html>
 
@@ -18,12 +19,12 @@
 		</h1>
 	</header>
 	<nav role="navigation" aria-labelledby="navheading">
-		<h2 id="navheading" class="accessibility">Navigation</h2>
+		<h2 id="navheading" class="accessibility">@Messages.get("navigation")</h2>
 		<ul>
 			@if(connected != null){
 			<li><a id="logoutlink" title="Klicke hier um dich abzumelden"
-				href="@routes.Application.logout()" accesskey="l">Abmelden</a></li> } else {
-			<li><a id="loginlink" title="Klicke hier um dich anzumelden" href="@routes.Application.authentication" accesskey="l">Anmelden</a></li>
+				href="@routes.Application.logout()" accesskey="l">@Messages.get("logout")</a></li> } else {
+			<li><a id="loginlink" title="Klicke hier um dich anzumelden" href="@routes.Application.authentication" accesskey="l">@Messages.get("login")</a></li>
 			}
 		</ul>
 	</nav>

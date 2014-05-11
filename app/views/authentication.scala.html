@@ -1,4 +1,10 @@
 @(form: Form[Application.Login])
+@import play.i18n._
+
+<h2 id="langheading" class="accessibility">Language</h2>
+
+<a href="language?lang=de">de</a>
+<a href="language?lang=en">en</a>
 
 @main(null, "- Login","loginpage") {
 
@@ -21,21 +27,21 @@
                         </p>
                     }
 
-                    <label for="username">Benutzername:</label>
+                    <label for="username">@Messages.get("username"):</label>
                     <input id="username" type="username" name="username" value="@form("username").value">
 
-                    <label for="password">Passwort:</label>
+                    <label for="password">@Messages.get("password"):</label>
                     <input id="password" type="password" name="password">
 
-                    <input id="loginsubmit" type="submit" value="Anmelden"/>
+                    <input id="loginsubmit" type="submit" value='@Messages.get("login")'/>
                 }
 
             </section>
             <!-- Register section -->
             <section id="register" aria-labelledby="registerheading">
-                <h2 id="registerheading" class="accessibility">Registrierung</h2>
-                <p>Nicht registriert?</p>
-                <a href="@routes.Application.registration">Zur Registierung</a>
+                <h2 id="registerheading" class="accessibility">@Messages.get("registerHeading")</h2>
+                <p>@Messages.get("notRegistered")?</p>
+                <a href="@routes.Application.registration">@Messages.get("toRegistration")</a>
             </section>
         </section>
 

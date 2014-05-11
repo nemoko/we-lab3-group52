@@ -1,26 +1,27 @@
 @(game_infos: List[String])
+@import play.i18n.Messages
 
 @main("connected", "- Spielende","winnerpage") {
 
 	<section role="main">
             <!-- winner message -->
             <section id="roundwinner" aria-labelledby="roundwinnerheading">
-                <h2 id="roundwinnerheading" class="accessibility">Endstand</h2>
-                <p class="roundwinnermessage">@game_infos.get(0) gewinnt!</p>
+                <h2 id="roundwinnerheading" class="accessibility">@Messages.get("quizResult")</h2>
+                <p class="roundwinnermessage">@game_infos.get(0) @Messages.get("wins")!</p>
             </section>
         
             <!-- round info -->    
             <section id="roundinfo" aria-labelledby="roundinfoheading">
-                <h2 id="roundinfoheading" class="accessibility">Spielerinformationen</h2>
+                <h2 id="roundinfoheading" class="accessibility">@Messages.get("playerInfo")</h2>
                 <div id="player1info" class="playerinfo">
-                    <span id="player1name" class="playername">Spieler 1</span>
-                    <p id="player1roundcounter" class="playerroundcounter">Gewonnene Runden: <span id="player1wonrounds" class="playerwonrounds">@game_infos.get(1)</span></p>
+                    <span id="player1name" class="playername">@Messages.get("player") 1</span>
+                    <p id="player1roundcounter" class="playerroundcounter">@Messages.get("roundsWon"): <span id="player1wonrounds" class="playerwonrounds">@game_infos.get(1)</span></p>
                 </div>
                 <div id="player2info" class="playerinfo">
-                    <span id="player2name" class="playername">Spieler 2</span>
-                    <p id="player2roundcounter" class="playerroundcounter">Gewonnene Runden: <span id="player2wonrounds" class="playerwonrounds">@game_infos.get(2)</span></p>
+                    <span id="player2name" class="playername">@Messages.get("player") 2</span>
+                    <p id="player2roundcounter" class="playerroundcounter">@Messages.get("roundsWon"): <span id="player2wonrounds" class="playerwonrounds">@game_infos.get(2)</span></p>
                 </div>
-                <a id="next" href="/quiz" accesskey="n">Neues Spiel</a>
+                <a id="next" href="/quiz" accesskey="n">@Messages.get("newGame")</a>
             </section>
         </section>
        

@@ -45,7 +45,18 @@ public class Spieler implements User {
     @Constraints.MaxLength(16)
     public String username;
 
+    @Constraints.MinLength(4)
+    @Constraints.MaxLength(16)
     public String password;
+
+    /*public List<ValidationError> validate() {
+        List<ValidationError> errors = null;
+        if (!Character.isUpperCase(username.charAt(0))) {
+            errors = new ArrayList<ValidationError>();
+            errors.add(new ValidationError("username", "Must start with upper case letter"));
+        }
+        return errors;
+    }*/
 
     public String getVorname() {
         return vorname;

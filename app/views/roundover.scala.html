@@ -1,37 +1,38 @@
 @(game_infos: List[String])
+@import play.i18n.Messages
 
 @main("connected", "- Zwischenzustand", "winnerpage") {
 
 	<section role="main">
             <!-- winner message -->
             <section id="roundwinner" aria-labelledby="roundwinnerheading">
-                <h2 id="roundwinnerheading" class="accessibility">Rundenzwischenstand</h2>
-                <p class="roundwinnermessage">@game_infos.get(0) gewinnt Runde @game_infos.get(1)!</p>
+                <h2 id="roundwinnerheading" class="accessibility">@Messages.get("roundResult")</h2>
+                <p class="roundwinnermessage">@game_infos.get(0) @Messages.get("winsRound") @game_infos.get(1)!</p>
             </section>
         
             <!-- round info -->    
             <section id="roundinfo" aria-labelledby="roundinfoheading">
-                <h2 id="roundinfoheading" class="accessibility">Spielerinformationen</h2>
+                <h2 id="roundinfoheading" class="accessibility">@Messages.get("playerInfo")</h2>
                 <div id="player1info" class="playerinfo">
                     <span id="player1name" class="playername">@game_infos.get(2)</span>
                     <ul class="playerroundsummary">
-                        <li><span class="accessibility">Frage 1:</span><span id="player1answer1" class=@game_infos.get(4)>Richtig</span></li>
-                        <li><span class="accessibility">Frage 2:</span><span id="player1answer2" class=@game_infos.get(5)>Falsch</span></li>
-                        <li><span class="accessibility">Frage 3:</span><span id="player1answer3" class=@game_infos.get(6)>Richtig</span></li>
+                        <li><span class="accessibility">@Messages.get("question") 1:</span><span id="player1answer1" class=@game_infos.get(4)>@Messages.get("correct")</span></li>
+                        <li><span class="accessibility">@Messages.get("question") 2:</span><span id="player1answer2" class=@game_infos.get(5)>@Messages.get("wrong")</span></li>
+                        <li><span class="accessibility">@Messages.get("question") 3:</span><span id="player1answer3" class=@game_infos.get(6)>@Messages.get("correct")</span></li>
                     </ul>
-                    <p id="player1roundcounter" class="playerroundcounter">Gewonnene Runden: <span id="player1wonrounds" class="playerwonrounds">@game_infos.get(7)</span></p>
+                    <p id="player1roundcounter" class="playerroundcounter">@Messages.get("roundsWon"): <span id="player1wonrounds" class="playerwonrounds">@game_infos.get(7)</span></p>
                 </div>
                 <div id="player2info" class="playerinfo">
                     <span id="player2name" class="playername">@game_infos.get(3)</span>
                     <ul class="playerroundsummary">
-                        <li><span class="accessibility">Frage 1:</span><span id="player2answer1" class=@game_infos.get(8)>Richtig</span></li>
-                        <li><span class="accessibility">Frage 2:</span><span id="player2answer2" class=@game_infos.get(9)>Richtig</span></li>
-                        <li><span class="accessibility">Frage 3:</span><span id="player2answer3" class=@game_infos.get(10)>Richtig</span></li>
+                        <li><span class="accessibility">@Messages.get("question") 1:</span><span id="player2answer1" class=@game_infos.get(8)>@Messages.get("correct")</span></li>
+                        <li><span class="accessibility">@Messages.get("question") 2:</span><span id="player2answer2" class=@game_infos.get(9)>@Messages.get("correct")</span></li>
+                        <li><span class="accessibility">@Messages.get("question") 3:</span><span id="player2answer3" class=@game_infos.get(10)>@Messages.get("correct")</span></li>
                     </ul>
-                    <p id="player2roundcounter" class="playerroundcounter">Gewonnene Runden: <span id="player2wonrounds" class="playerwonrounds">@game_infos.get(11)</span></p>
+                    <p id="player2roundcounter" class="playerroundcounter">@Messages.get("roundsWon"): <span id="player2wonrounds" class="playerwonrounds">@game_infos.get(11)</span></p>
                 </div>
                 @helper.form(routes.Application.quiz_new_player) {
-                	<input id="next" type="submit" value="Weiter"/>
+                	<input id="next" type="submit" value='@Messages.get("continue")'/>
                 }
             </section>
         </section>
