@@ -62,9 +62,13 @@ public class Application extends Controller {
 		public String validate() {
             //String errors = null;
             if (isBlank(username)) {
-                return "Please enter a username";
+            	if(Controller.lang().language().equals("de")) {
+            		return "Geben Sie bitte den Benutzernamen ein";
+            	} else return "Please enter a username";
             } else if (isBlank(password)) {
-                return "Please enter password";
+            	if(Controller.lang().language().equals("de")) {
+            		return "Geben Sie bitte das Passwort ein";
+            	} else return "Please enter password";
             }
 			return null;
 		}
@@ -115,13 +119,21 @@ public class Application extends Controller {
 	     */
 	    public String validate() {
 	        if (isBlank(username)) {
-	            return "Username is required";
+	        	if(Controller.lang().language().equals("de")) {
+            		return "Geben Sie bitte den Benutzernamen ein";
+            	} else return "Username is required";
 	        } else if (username.length()<4 || username.length()>8) {
-                return "Username must be between 4 and 8 symbols";
+	        	if(Controller.lang().language().equals("de")) {
+            		return "Der Benutzername muss zwischen 4 und 8 Zeichen lang sein";
+            	} else return "Username must be between 4 and 8 symbols";
             } else if (isBlank(password)) {
-	            return "Password is required";
+            	if(Controller.lang().language().equals("de")) {
+            		return "Geben Sie bitte das Passwort ein";
+            	} else return "Password is required";
 	        } else if (password.length()<4 || password.length()>8) {
-                return "Password must be between 4 and 8 symbols";
+	        	if(Controller.lang().language().equals("de")) {
+            		return "Das Passwort muss zwischen 4 und 8 Zeichen lang sein";
+            	} else return "Password must be between 4 and 8 symbols";
             }
 
 	        return null;
@@ -149,7 +161,9 @@ public class Application extends Controller {
 					loginForm.get().password)) {
 				return redirect(routes.Application.index());
 			} else {
-                flash("success", "Username/Password invalid"); //TODO: Improve error message
+				if(Controller.lang().language().equals("de")) {
+					flash("success", "Benutzername/Passwort falsch");
+            	} else {flash("success", "Username/Password invalid");} //TODO: Improve error message
                 return redirect(routes.Application.authentication());
             }
 		}
